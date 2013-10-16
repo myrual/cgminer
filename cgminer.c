@@ -7831,6 +7831,8 @@ int main(int argc, char *argv[])
 	int i, j;
 	char *s;
 
+	printf("this is cgminer hacker \n");
+
 	/* This dangerous functions tramples random dynamically allocated
 	 * variables so do it before anything at all */
 	if (unlikely(curl_global_init(CURL_GLOBAL_ALL)))
