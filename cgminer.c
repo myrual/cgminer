@@ -7831,6 +7831,7 @@ int main(int argc, char *argv[])
 	int i, j;
 	char *s;
 	CURL *curl;
+	CURLcode res;
 
 	printf("this is cgminer hacker \n");
 
