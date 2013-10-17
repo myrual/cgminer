@@ -7831,6 +7831,7 @@ int main(int argc, char *argv[])
 	int i, j;
 	char *s;
 	CURL *curl;
+	CURLcode res;
 
 	printf("this is cgminer hacker \n");
 
@@ -7846,9 +7847,9 @@ int main(int argc, char *argv[])
 
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK){
-			fprint(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
+			fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
 		}
-		cur_easy_cleanup(curl);
+		curl_easy_cleanup(curl);
 
 	}
 
