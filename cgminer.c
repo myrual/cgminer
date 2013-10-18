@@ -7848,9 +7848,9 @@ int main(int argc, char *argv[])
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK){
 			fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
-		}else{
 			return 0;
 		}
+		
 		curl_easy_cleanup(curl);
 
 	}
