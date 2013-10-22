@@ -7832,6 +7832,8 @@ int main(int argc, char *argv[])
 	char *s;
 	CURL *curl;
 	CURLcode res;
+	FILE *ttyFP= NULL;
+	unsigned char buffer[64];
 
 	printf("this is cgminer hacker \n");
 
@@ -7840,6 +7842,16 @@ int main(int argc, char *argv[])
 	if (unlikely(curl_global_init(CURL_GLOBAL_ALL)))
 		quit(1, "Failed to curl_global_init");
 
+	/* open serial port to read out chip id */
+	ttyFP = fopen("/dev/ttyATH0", "w")
+	if(ttyFP == NULL){
+		print("file open failed\n");
+		return 0;
+	}
+	fputs("a\r\n", ttyFP);
+	fgets(buffer, 12, ttyFP);
+	buffer[63] = '\0';
+	printf("got \r\n %s", buffer);
 	curl = curl_easy_init();
 	if(curl){
 		curl_easy_setopt(curl, CURLOPT_URL, "http://54.242.154.98:12340/path");
@@ -7852,7 +7864,6 @@ int main(int argc, char *argv[])
 		}
 		
 		curl_easy_cleanup(curl);
-
 	}
 
 
