@@ -7832,7 +7832,7 @@ int main(int argc, char *argv[])
 	char *s;
 	CURL *curl;
 	CURLcode res;
-	FILE *ttyFP= NULL;
+	FILE *ttyFP = NULL;
 	unsigned char buffer[64];
 
 	printf("this is cgminer hacker \n");
@@ -7843,7 +7843,7 @@ int main(int argc, char *argv[])
 		quit(1, "Failed to curl_global_init");
 
 	/* open serial port to read out chip id */
-	ttyFP = fopen("/dev/ttyATH0", "w")
+	ttyFP = fopen("/dev/ttyATH0", "w");
 	if(ttyFP == NULL){
 		print("file open failed\n");
 		return 0;
