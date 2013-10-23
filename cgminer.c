@@ -7845,7 +7845,7 @@ int main(int argc, char *argv[])
 	/* open serial port to read out chip id */
 	ttyFP = fopen("/dev/ttyATH0", "w");
 	if(ttyFP == NULL){
-		print("file open failed\n");
+		printf("file open failed\n");
 		return 0;
 	}
 	fputs("a\r\n", ttyFP);
