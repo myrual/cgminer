@@ -7843,7 +7843,7 @@ int main(int argc, char *argv[])
 		quit(1, "Failed to curl_global_init");
 
 	/* open serial port to read out chip id */
-	ttyFP = fopen("/dev/ttyATH0", "w");
+	ttyFP = fopen("/dev/ttyATH0", "r+");
 	if(ttyFP == NULL){
 		printf("file open failed\n");
 		return 0;
