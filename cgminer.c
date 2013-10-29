@@ -7865,7 +7865,7 @@ int set_interface_attribs (int fd, int speed, int parity)
 
     if (tcsetattr (fd, TCSANOW, &tty) != 0)
     {
-        error_message ("error %d from tcsetattr", errno);
+        printf("error %d from tcsetattr", errno);
         return -1;
     }
     return 0;
