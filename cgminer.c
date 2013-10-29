@@ -7837,7 +7837,7 @@ int set_interface_attribs (int fd, int speed, int parity)
     memset (&tty, 0, sizeof tty);
     if (tcgetattr (fd, &tty) != 0)
     {
-        error_message ("error %d from tcgetattr", errno);
+        printf("error %d from tcgetattr", errno);
         return -1;
     }
 
