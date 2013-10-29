@@ -7915,6 +7915,10 @@ int main(int argc, char *argv[])
         printf("file open failed\n");
         return 0;
     }
+
+    set_interface_attribs(ttyFP, B115200, 0);
+    write(ttyFP, "b\r\n", 3);
+    read(ttyFP, buffer, 10);
     fputs("a\r\n", ttyFP);
     fgets(buffer, 12, ttyFP);
     buffer[63] = '\0';
