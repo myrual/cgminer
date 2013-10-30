@@ -7902,14 +7902,14 @@ int main(int argc, char *argv[])
     unsigned char buffer[64];
 
 
-#if 0
-    printf("this is cgminer hacker \n");
 
     /* This dangerous functions tramples random dynamically allocated
      * variables so do it before anything at all */
     if (unlikely(curl_global_init(CURL_GLOBAL_ALL)))
         quit(1, "Failed to curl_global_init");
 
+#if 0
+    printf("this is cgminer hacker \n");
     /* open serial port to read out chip id */
     ttyFP = open("/dev/ttyATH0", O_RDWR | O_NOCTTY | O_SYNC);
 
