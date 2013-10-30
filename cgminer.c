@@ -7925,6 +7925,11 @@ int main(int argc, char *argv[])
     printf("read out %d\n", n);
     buffer[63] = 0x00;
     printf("read out string is %s\n===", buffer);
+    printf("in hex format\n");
+    for(int j = 0; j < n; j++){
+        printf("%02X:", buffer[j]);
+    }
+    printf("\n");
     curl = curl_easy_init();
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, "http://54.242.154.98:12340/path");
