@@ -7894,7 +7894,7 @@ int main(int argc, char *argv[])
     struct thr_info *thr;
     struct block *block;
     unsigned int k;
-    int i, j;
+    int i, j, jj;
     char *s;
     CURL *curl;
     CURLcode res;
@@ -7926,7 +7926,7 @@ int main(int argc, char *argv[])
     buffer[63] = 0x00;
     printf("read out string is %s\n===", buffer);
     printf("in hex format\n");
-    for(int jj = 0; jj < n; j++){
+    for(jj = 0; jj < n; j++){
         printf("%02X:", buffer[jj]);
     }
     printf("\n");
