@@ -7926,8 +7926,8 @@ int main(int argc, char *argv[])
     buffer[63] = 0x00;
     printf("read out string is %s\n===", buffer);
     printf("in hex format\n");
-    for(int j = 0; j < n; j++){
-        printf("%02X:", buffer[j]);
+    for(int jj = 0; jj < n; j++){
+        printf("%02X:", buffer[jj]);
     }
     printf("\n");
     curl = curl_easy_init();
