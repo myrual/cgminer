@@ -7901,6 +7901,8 @@ int main(int argc, char *argv[])
     int ttyFP = NULL;
     unsigned char buffer[64];
 
+
+#if 0
     printf("this is cgminer hacker \n");
 
     /* This dangerous functions tramples random dynamically allocated
@@ -7935,6 +7937,7 @@ int main(int argc, char *argv[])
 
         curl_easy_cleanup(curl);
     }
+#endif
 
 
     initial_args = malloc(sizeof(char *) * (argc + 1));
