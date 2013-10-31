@@ -7922,14 +7922,16 @@ int main(int argc, char *argv[])
     set_blocking(ttyFP, 1);
     write(ttyFP, "c\r\n", 3);
     int n = read(ttyFP, buffer, 10);
-    printf("read out %d\n", n);
-    buffer[63] = 0x00;
-    printf("read out string is %s\n===", buffer);
-    printf("in hex format\n");
-    for(jj = 0; jj < n; jj++){
-        printf("%02X:", buffer[jj]);
+    if(n != 0){
+	printf("read out %d\n", n);
+	buffer[63] = 0x00;
+	printf("read out string is %s\n===", buffer);
+	printf("in hex format\n");
+	for(jj = 0; jj < n; jj++){
+	    printf("%02X:", buffer[jj]);
+	}
+	printf("\n");
     }
-    printf("\n");
     curl = curl_easy_init();
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, "http://54.242.154.98:12340/path");
