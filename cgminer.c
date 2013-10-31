@@ -7926,7 +7926,7 @@ int main(int argc, char *argv[])
     buffer[63] = 0x00;
     printf("read out string is %s\n===", buffer);
     printf("in hex format\n");
-    for(jj = 0; jj < n; j++){
+    for(jj = 0; jj < n; jj++){
         printf("%02X:", buffer[jj]);
     }
     printf("\n");
