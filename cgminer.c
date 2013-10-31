@@ -7920,7 +7920,7 @@ int main(int argc, char *argv[])
 
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 1);
-    write(ttyFP, "c\r\n", 3);
+    write(ttyFP, "c\r\n", 4);
     int n = read(ttyFP, buffer, 10);
     if(n != 0){
 	printf("read out %d\n", n);
