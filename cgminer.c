@@ -7920,7 +7920,7 @@ int main(int argc, char *argv[])
 
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
-    //write(ttyFP, "a\r\n\0\0", 5);
+    write(ttyFP, "a\r\n\0\0", 5);
     write(ttyFP, "a\r\n\0\0", 5);
 
     sleep(5);
