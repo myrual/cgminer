@@ -7920,7 +7920,7 @@ int main(int argc, char *argv[])
 
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
-    write(ttyFP, "a\r\n\0\0", 5);
+    //write(ttyFP, "a\r\n\0\0", 5);
     write(ttyFP, "a\r\n\0\0", 5);
 
     sleep(5);
@@ -7939,8 +7939,7 @@ int main(int argc, char *argv[])
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, "http://54.242.154.98:12340/path");
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-        res = curl_easy_perform(curl);
-        if(res != CURLE_OK) {
+        res = curl_easy_perform(curl); if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
             return 0;
         }
