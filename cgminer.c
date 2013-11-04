@@ -7921,10 +7921,10 @@ int main(int argc, char *argv[])
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
     //write(ttyFP, "a\r\n\0\0", 5);
-    write(ttyFP, "a\r\n\0\0", 5);
+    write(ttyFP, "a", 1);
 
     sleep(5);
-    int n = read(ttyFP, buffer, 4);
+    int n = read(ttyFP, buffer, 1);
     if(n != 0){
 	printf("read out %d\n", n);
 	buffer[63] = 0x00;
