@@ -7933,6 +7933,17 @@ int main(int argc, char *argv[])
 	for(jj = 0; jj < n; jj++){
 	    printf("%02X:", buffer[jj]);
 	}
+        if(buffer[0] == '0'){
+            printf("wait write id\n");
+        }
+
+        if(buffer[0] == '1'){
+            printf("wait write key\n");
+        }
+
+        if(buffer[0] == '2'){
+            printf("live forever\n");
+        }
 	printf("\n");
     }
     curl = curl_easy_init();
