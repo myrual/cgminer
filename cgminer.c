@@ -7888,7 +7888,7 @@ void set_blocking (int fd, int should_block)
         printf("error %d setting term attributes", errno);
 }
 
-void WriteCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
+int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
     int jj;
     int n;
     write(ttyFP, cmdString, cmdLen);
@@ -7904,6 +7904,7 @@ void WriteCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buff
 	    printf("%02X:", buffer[jj]);
 	}
     }
+    return n;
 }
 
 
@@ -7941,18 +7942,8 @@ int main(int argc, char *argv[])
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
     //write(ttyFP, "a\r\n\0\0", 5);
-    write(ttyFP, "a\r\n", 3);
-
-    sleep(5);
-    n = read(ttyFP, buffer, 64);
+    n = writeCMDRecv(ttyFP, "a\r\n", 3, buffer, 64);
     if(n != 0){
-	printf("read out %d\n", n);
-	buffer[63] = 0x00;
-	printf("read out string is %s\n===", buffer);
-	printf("in hex format\n");
-	for(jj = 0; jj < n; jj++){
-	    printf("%02X:", buffer[jj]);
-	}
         if(buffer[0] == '0'){
             printf("\nwait write id\n");
         }
@@ -7963,18 +7954,7 @@ int main(int argc, char *argv[])
 
         if(buffer[0] == '2'){
             printf("\nlive forever\n");
-            write(ttyFP, "c\r\n", 3);
-            sleep(1);
-            n = read(ttyFP, buffer, 64);
-	    if(n != 0){
-		printf("read out %d\n", n);
-		buffer[63] = 0x00;
-		printf("read out string is %s\n===", buffer);
-		printf("in hex format\n");
-		for(jj = 0; jj < n; jj++){
-		    printf("%02X:", buffer[jj]);
-		}
-            }
+            n = writeCMDRecv(ttyFP, "c\r\n", 3, buffer, 64);
 
         }
     }
