@@ -7924,7 +7924,7 @@ int main(int argc, char *argv[])
     write(ttyFP, "a\r\n", 3);
 
     sleep(5);
-    int n = read(ttyFP, buffer, 1);
+    int n = read(ttyFP, buffer, 64);
     if(n != 0){
 	printf("read out %d\n", n);
 	buffer[63] = 0x00;
