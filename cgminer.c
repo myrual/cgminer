@@ -7897,7 +7897,7 @@ void WriteCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buff
     n = read(ttyFP, buffer, buffLen);
     if(n != 0){
 	printf("read out %d\n", n);
-	buffer[buffer] = 0x00;
+	buffer[buffLen] = 0x00;
 	printf("read out string is %s\n===", buffer);
 	printf("in hex format\n");
 	for(jj = 0; jj < n; jj++){
