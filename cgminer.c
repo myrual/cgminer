@@ -7930,7 +7930,7 @@ int main(int argc, char *argv[])
         quit(1, "Failed to curl_global_init");
 
 #if 1
-    printf("this is cgminer hacker \n");
+    printf("this is cgminer hacker v101 \n");
     /* open serial port to read out chip id */
     ttyFP = open("/dev/ttyATH0", O_RDWR | O_NOCTTY | O_SYNC);
 
