@@ -7888,6 +7888,25 @@ void set_blocking (int fd, int should_block)
         printf("error %d setting term attributes", errno);
 }
 
+void WriteCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
+    int jj;
+    int n;
+    write(ttyFP, cmdString, cmdLen);
+
+    sleep(5);
+    n = read(ttyFP, buffer, buffLen);
+    if(n != 0){
+	printf("read out %d\n", n);
+	buffer[buffer] = 0x00;
+	printf("read out string is %s\n===", buffer);
+	printf("in hex format\n");
+	for(jj = 0; jj < n; jj++){
+	    printf("%02X:", buffer[jj]);
+	}
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     struct sigaction handler;
