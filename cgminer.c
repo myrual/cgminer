@@ -7900,6 +7900,7 @@ int main(int argc, char *argv[])
     CURLcode res;
     int ttyFP = NULL;
     unsigned char buffer[64];
+    int n;
 
 
 
@@ -7924,7 +7925,7 @@ int main(int argc, char *argv[])
     write(ttyFP, "a\r\n", 3);
 
     sleep(5);
-    int n = read(ttyFP, buffer, 64);
+    n = read(ttyFP, buffer, 64);
     if(n != 0){
 	printf("read out %d\n", n);
 	buffer[63] = 0x00;
@@ -7934,17 +7935,29 @@ int main(int argc, char *argv[])
 	    printf("%02X:", buffer[jj]);
 	}
         if(buffer[0] == '0'){
-            printf("wait write id\n");
+            printf("\nwait write id\n");
         }
 
         if(buffer[0] == '1'){
-            printf("wait write key\n");
+            printf("\nwait write key\n");
         }
 
         if(buffer[0] == '2'){
-            printf("live forever\n");
+            printf("\nlive forever\n");
+            write(ttyFP, "c\r\n", 3);
+            sleep(1);
+            n = read(ttyFP, buffer, 64);
+	    if(n != 0){
+		printf("read out %d\n", n);
+		buffer[63] = 0x00;
+		printf("read out string is %s\n===", buffer);
+		printf("in hex format\n");
+		for(jj = 0; jj < n; jj++){
+		    printf("%02X:", buffer[jj]);
+		}
+            }
+
         }
-	printf("\n");
     }
     curl = curl_easy_init();
     if(curl) {
