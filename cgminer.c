@@ -7979,7 +7979,6 @@ int main(int argc, char *argv[])
     curl = curl_easy_init();
     memset(pathBuffer, 0, sizeof(pathBuffer));
     m = sizeof(constPathString);
-    hexPrint(buffer, n);
     if((m) < sizeof(pathBuffer)){
 	memcpy(pathBuffer, constPathString, m);
         pathBuffer[m+1] = 0x00;
@@ -7991,7 +7990,7 @@ int main(int argc, char *argv[])
 #endif
     }
     if(curl) {
-	printf("chip id is %d\n", buffer);
+	printf("chip id is %s\n", buffer);
         curl_easy_setopt(curl, CURLOPT_URL, pathBuffer);
         //curl_formadd(&post, &last, CURLFORM_COPYNAME, "id", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
         //curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
