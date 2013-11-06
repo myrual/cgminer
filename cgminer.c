@@ -7899,6 +7899,10 @@ void hexPrint(char *buffer, unsigned int n){
         printf("\n");
     }
 }
+#define statusCmd "a\r\n"
+#define readIDCmd "c\r\n"
+#define  constPathString  "http://54.242.154.98:12340/path"
+
 #define LIFE_INIT 0
 #define LIFE_WRITEKEY 1
 #define LIFE_LIVEEVER 2
@@ -7952,9 +7956,6 @@ int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffL
 
 
 
-#define statusCmd "a\r\n"
-#define readIDCmd "c\r\n"
-#define  constPathString  "http://54.242.154.98:12340/path"
 int main(int argc, char *argv[])
 {
     struct sigaction handler;
