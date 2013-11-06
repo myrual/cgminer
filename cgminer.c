@@ -7908,15 +7908,30 @@ void hexPrint(char *buffer, unsigned int n){
 #define LIFE_LIVEEVER 2
 #define LIFE_ERROR -1
 
-int curLifeStatus(void){
+int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
+    int jj;
+    int n;
+    write(ttyFP, cmdString, cmdLen);
+
+    sleep(5);
+    n = read(ttyFP, buffer, buffLen);
+    if(n != 0){
+	printf("read out %d\n", n);
+	buffer[buffLen] = 0x00;
+	printf("read out string is %s\n===", buffer);
+        hexPrint(buffer, n);
+    }
+    return n;
+}
+
+
+int curLifeStatus(int ttyFP){
     int ttyFP = 0;
     int n;
     unsigned char buffer[64];
 
-    ttyFP = open("/dev/ttyATH0", O_RDWR | O_NOCTTY | O_SYNC);
-
     if(ttyFP < 0) {
-        printf("file open failed\n");
+        printf("file id incorrect\n");
         return LIFE_ERROR;
     }
 
@@ -7938,28 +7953,11 @@ int curLifeStatus(void){
 
 }
 
-int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
-    int jj;
-    int n;
-    write(ttyFP, cmdString, cmdLen);
-
-    sleep(5);
-    n = read(ttyFP, buffer, buffLen);
-    if(n != 0){
-	printf("read out %d\n", n);
-	buffer[buffLen] = 0x00;
-	printf("read out string is %s\n===", buffer);
-        hexPrint(buffer, n);
-    }
-    return n;
-}
-
 
 
 int main(int argc, char *argv[])
 {
-    struct sigaction handler;
-    struct thr_info *thr;
+    struct sigaction handler; struct thr_info *thr;
     struct block *block;
     unsigned int k;
     int i, j, jj;
@@ -7992,36 +7990,38 @@ int main(int argc, char *argv[])
 
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
-    //write(ttyFP, "a\r\n\0\0", 5);
-    memset(buffer, 0, sizeof(buffer));
-    n = writeCMDRecv(ttyFP, statusCmd, sizeof(statusCmd) - 1, buffer, sizeof(buffer));
-    if(n != 0){
-        if(buffer[0] == '0'){
+    //memset(buffer, 0, sizeof(buffer));
+    //n = writeCMDRecv(ttyFP, statusCmd, sizeof(statusCmd) - 1, buffer, sizeof(buffer));
+    n = curLifeStatus(ttyFP);
+    switch(n){
+        case LIFE_INIT:
             printf("\nwait write id\n");
-        }
-
-        if(buffer[0] == '1'){
+            break;
+        case LIFE_WRITEKEY:
             printf("\nwait write key\n");
-        }
+            break;
+        case LIFE_LIVEEVER:
+            printf("\nlive forever\n");
+            memset(buffer, 0, sizeof(buffer));
+            n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, sizeof(buffer));
+            break;
+        default:
+            return 0;
+    }
 
+#if 0
         if(buffer[0] == '2'){
             printf("\nlive forever\n");
             memset(buffer, 0, sizeof(buffer));
             n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, sizeof(buffer));
         }
-    }
+#endif
     curl = curl_easy_init();
     memset(pathBuffer, 0, sizeof(pathBuffer));
     m = sizeof(constPathString);
     if((m) < sizeof(pathBuffer)){
 	memcpy(pathBuffer, constPathString, m);
         pathBuffer[m+1] = 0x00;
-#if 0
-	if(n !=0){
-            memcpy(pathBuffer+m, buffer, n);
-            buffer[n] = 0;
-	}
-#endif
     }
     if(curl) {
 	printf("chip id is %s\n", buffer);
