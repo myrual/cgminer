@@ -7888,13 +7888,13 @@ void set_blocking (int fd, int should_block)
         printf("error %d setting term attributes", errno);
 }
 
-void hexPrint(char *buffer, unsigned int n){
-    int jj;
+void hexPrint(char *toPrintbuffer, unsigned int n){
+    int j;
 
     if(n > 0){
         printf("hex print:");
-	for(jj = 0; jj < n; jj++){
-            printf("%02X:", buffer[jj]);
+	for(j = 0; j < n; j++){
+            printf("%02X:", toPrintbuffer[j]);
 	}
         printf("\n");
     }
@@ -7908,18 +7908,17 @@ void hexPrint(char *buffer, unsigned int n){
 #define LIFE_LIVEEVER 2
 #define LIFE_ERROR -1
 
-unsigned int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
-    int jj;
+unsigned int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *destBuffer, int buffLen){
     int n;
     write(ttyFP, cmdString, cmdLen);
 
     sleep(5);
-    n = read(ttyFP, buffer, buffLen);
+    n = read(ttyFP, destBuffer, buffLen);
     if(n != 0){
 	printf("read out %d\n", n);
-	buffer[buffLen] = 0x00;
-	printf("read out string is %s\n===", buffer);
-        hexPrint(buffer, n);
+	destBuffer[buffLen] = 0x00;
+	printf("read out string is %s\n===", destBuffer);
+        hexPrint(destBuffer, n);
     }
     return n;
 }
@@ -7952,11 +7951,11 @@ int curLifeStatus(int ttyFP){
 
 }
 
-int readChipID(int ttyFP, unsigned char *buffer, unsigned int lenOfBuffer)
+int readChipID(int ttyFP, unsigned char *dstBuffer, unsigned int lenOfBuffer)
 {
     unsigned int n;
-    memset(buffer, 0, lenOfBuffer);
-    n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, lenOfBuffer);
+    memset(dstBuffer, 0, lenOfBuffer);
+    n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, dstBuffer, lenOfBuffer);
     return n;
 }
 
@@ -7967,7 +7966,7 @@ int main(int argc, char *argv[])
     struct sigaction handler; struct thr_info *thr;
     struct block *block;
     unsigned int k;
-    int i, j, jj;
+    int i, j;
     char *s;
     CURL *curl;
     CURLcode res;
@@ -7997,8 +7996,6 @@ int main(int argc, char *argv[])
 
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
-    //memset(buffer, 0, sizeof(buffer));
-    //n = writeCMDRecv(ttyFP, statusCmd, sizeof(statusCmd) - 1, buffer, sizeof(buffer));
     n = curLifeStatus(ttyFP);
     switch(n){
         case LIFE_INIT:
