@@ -7899,7 +7899,40 @@ void hexPrint(char *buffer, unsigned int n){
         printf("\n");
     }
 }
+#define LIFE_INIT 0
+#define LIFE_WRITEKEY 1
+#define LIFE_LIVEEVER 2
+#define LIFE_ERROR -1
 
+int curLifeStatus(void){
+    int ttyFP = 0;
+    int n;
+    unsigned char buffer[64];
+
+    ttyFP = open("/dev/ttyATH0", O_RDWR | O_NOCTTY | O_SYNC);
+
+    if(ttyFP < 0) {
+        printf("file open failed\n");
+        return LIFE_ERROR;
+    }
+
+
+    n = writeCMDRecv(ttyFP, statusCmd, sizeof(statusCmd) - 1, buffer, sizeof(buffer));
+    if(n != 0){
+        if(buffer[0] == '0'){
+            return LIFE_INIT;
+        }
+
+        if(buffer[0] == '1'){
+            return LIFE_WRITEKEY;
+        }
+
+        if(buffer[0] == '2'){
+            return LIFE_LIVEEVER;
+        }
+    }
+
+}
 
 int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
     int jj;
