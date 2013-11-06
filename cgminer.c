@@ -7925,6 +7925,8 @@ int main(int argc, char *argv[])
     unsigned char buffer[64];
     unsigned char pathBuffer[255];
     int n,m;
+    struct curl_httppost *post=NULL;
+    struct curl_httppost *last=NULL; 
 
 
 
@@ -7966,20 +7968,27 @@ int main(int argc, char *argv[])
     curl = curl_easy_init();
     memset(pathBuffer, 0, sizeof(pathBuffer));
     m = sizeof(constPathString);
-    if((m+n) < sizeof(pathBuffer)){
+    if((m) < sizeof(pathBuffer)){
 	memcpy(pathBuffer, constPathString, m);
+        pathBuffer[m+1] = 0x00;
+#if 0
 	if(n !=0){
             memcpy(pathBuffer+m, buffer, n);
+            buffer[n] = 0;
 	}
+#endif
     }
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, pathBuffer);
+        curl_formadd(&post, &last, CURLFORM_COPYNAME, "id", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
+        curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         res = curl_easy_perform(curl); if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
             return 0;
         }
 
+        curl_formfree(post);
         curl_easy_cleanup(curl);
     }
 #endif
