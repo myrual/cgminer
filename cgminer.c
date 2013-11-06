@@ -7908,7 +7908,7 @@ void hexPrint(char *buffer, unsigned int n){
 #define LIFE_LIVEEVER 2
 #define LIFE_ERROR -1
 
-int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
+unsigned int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
     int jj;
     int n;
     write(ttyFP, cmdString, cmdLen);
@@ -7926,7 +7926,7 @@ int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffL
 
 
 int curLifeStatus(int ttyFP){
-    int n;
+    unsigned int n;
     unsigned char buffer[64];
 
     if(ttyFP < 0) {
@@ -7954,6 +7954,7 @@ int curLifeStatus(int ttyFP){
 
 int readChipID(int ttyFP, unsigned char *buffer, unsigned int lenOfBuffer)
 {
+    unsigned int n;
     memset(buffer, 0, lenOfBuffer);
     n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, lenOfBuffer);
     return n;
