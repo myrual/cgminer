@@ -7952,6 +7952,13 @@ int curLifeStatus(int ttyFP){
 
 }
 
+int readChipID(int ttyFP, unsigned char *buffer, unsigned int lenOfBuffer)
+{
+    memset(buffer, 0, lenOfBuffer);
+    n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, lenOfBuffer);
+    return n;
+}
+
 
 
 int main(int argc, char *argv[])
@@ -8001,8 +8008,7 @@ int main(int argc, char *argv[])
             break;
         case LIFE_LIVEEVER:
             printf("\nlive forever\n");
-            memset(buffer, 0, sizeof(buffer));
-            n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, sizeof(buffer));
+	    n = readChipID(ttyFP, buffer, sizeof(buffer));
             break;
         default:
             return 0;
