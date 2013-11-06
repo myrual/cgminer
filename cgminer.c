@@ -7908,6 +7908,9 @@ int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffL
 }
 
 
+
+#define statusCmd "a\r\n"
+#define  constPathString  "http://54.242.154.98:12340/path"
 int main(int argc, char *argv[])
 {
     struct sigaction handler;
@@ -7920,7 +7923,8 @@ int main(int argc, char *argv[])
     CURLcode res;
     int ttyFP = NULL;
     unsigned char buffer[64];
-    int n;
+    unsigned char pathBuffer[255];
+    int n,m;
 
 
 
@@ -7942,7 +7946,8 @@ int main(int argc, char *argv[])
     set_interface_attribs(ttyFP, B115200, 0);
     set_blocking(ttyFP, 0);
     //write(ttyFP, "a\r\n\0\0", 5);
-    n = writeCMDRecv(ttyFP, "a\r\n", 3, buffer, 64);
+    memset(buffer, 0, sizeof(buffer));
+    n = writeCMDRecv(ttyFP, statusCmd, sizeof(statusCmd) - 1, buffer, sizeof(buffer));
     if(n != 0){
         if(buffer[0] == '0'){
             printf("\nwait write id\n");
@@ -7954,13 +7959,21 @@ int main(int argc, char *argv[])
 
         if(buffer[0] == '2'){
             printf("\nlive forever\n");
+            memset(buffer, 0, sizeof(buffer));
             n = writeCMDRecv(ttyFP, "c\r\n", 3, buffer, 64);
-
         }
     }
     curl = curl_easy_init();
+    memset(pathBuffer, 0, sizeof(pathBuffer));
+    m = sizeof(constPathString);
+    if((m+n) < sizeof(pathBuffer)){
+	memcpy(pathBuffer, constPathString, m);
+	if(n !=0){
+            memcpy(pathBuffer+m; buffer, n);
+	}
+    }
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "http://54.242.154.98:12340/path");
+        curl_easy_setopt(curl, CURLOPT_URL, pathBuffer);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         res = curl_easy_perform(curl); if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
