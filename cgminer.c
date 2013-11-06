@@ -7888,6 +7888,19 @@ void set_blocking (int fd, int should_block)
         printf("error %d setting term attributes", errno);
 }
 
+void hexPrint(char *buffer, unsigned int n){
+    int jj;
+
+    if(n > 0){
+        printf("hex print:");
+	for(jj = 0; jj < n; jj++){
+            printf("%02X:", buffer[jj]);
+	}
+        printf("\n");
+    }
+}
+
+
 int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffLen){
     int jj;
     int n;
@@ -7899,10 +7912,7 @@ int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffL
 	printf("read out %d\n", n);
 	buffer[buffLen] = 0x00;
 	printf("read out string is %s\n===", buffer);
-	printf("in hex format\n");
-	for(jj = 0; jj < n; jj++){
-	    printf("%02X:", buffer[jj]);
-	}
+        hexPrint(buffer, n);
     }
     return n;
 }
@@ -7969,6 +7979,7 @@ int main(int argc, char *argv[])
     curl = curl_easy_init();
     memset(pathBuffer, 0, sizeof(pathBuffer));
     m = sizeof(constPathString);
+    hexPrint(buffer, n);
     if((m) < sizeof(pathBuffer)){
 	memcpy(pathBuffer, constPathString, m);
         pathBuffer[m+1] = 0x00;
@@ -7990,7 +8001,7 @@ int main(int argc, char *argv[])
             return 0;
         }
 
-        curl_formfree(post);
+        //curl_formfree(post);
         curl_easy_cleanup(curl);
     }
 #endif
