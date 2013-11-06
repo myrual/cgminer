@@ -7921,7 +7921,7 @@ int main(int argc, char *argv[])
     char *s;
     CURL *curl;
     CURLcode res;
-    int ttyFP = NULL;
+    int ttyFP = 0;
     unsigned char buffer[64];
     unsigned char pathBuffer[255];
     int n,m;
@@ -7969,7 +7969,7 @@ int main(int argc, char *argv[])
     if((m+n) < sizeof(pathBuffer)){
 	memcpy(pathBuffer, constPathString, m);
 	if(n !=0){
-            memcpy(pathBuffer+m; buffer, n);
+            memcpy(pathBuffer+m, buffer, n);
 	}
     }
     if(curl) {
