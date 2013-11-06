@@ -7926,7 +7926,6 @@ int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffL
 
 
 int curLifeStatus(int ttyFP){
-    int ttyFP = 0;
     int n;
     unsigned char buffer[64];
 
