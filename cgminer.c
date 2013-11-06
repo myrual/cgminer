@@ -7910,6 +7910,7 @@ int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *buffer, int buffL
 
 
 #define statusCmd "a\r\n"
+#define readIDCmd "c\r\n"
 #define  constPathString  "http://54.242.154.98:12340/path"
 int main(int argc, char *argv[])
 {
@@ -7962,7 +7963,7 @@ int main(int argc, char *argv[])
         if(buffer[0] == '2'){
             printf("\nlive forever\n");
             memset(buffer, 0, sizeof(buffer));
-            n = writeCMDRecv(ttyFP, "c\r\n", 3, buffer, 64);
+            n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, sizeof(buffer));
         }
     }
     curl = curl_easy_init();
@@ -7979,9 +7980,10 @@ int main(int argc, char *argv[])
 #endif
     }
     if(curl) {
+	printf("chip id is %d\n", buffer);
         curl_easy_setopt(curl, CURLOPT_URL, pathBuffer);
-        curl_formadd(&post, &last, CURLFORM_COPYNAME, "id", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
-        curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
+        //curl_formadd(&post, &last, CURLFORM_COPYNAME, "id", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
+        //curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         res = curl_easy_perform(curl); if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
