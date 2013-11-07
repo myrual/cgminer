@@ -7897,6 +7897,10 @@ void hexPrint(char *toPrintbuffer, unsigned int n){
             printf("%02X:", toPrintbuffer[j]);
 	}
         printf("\n");
+	for(j = 0; j< n; j++){
+	    printf("%c", toascii(toPrintbuffer[j]));
+	}
+        printf("\n");
     }
 }
 #define statusCmd "a\r\n"
