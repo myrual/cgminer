@@ -7922,10 +7922,12 @@ unsigned int writeCMDRecv(int ttyFP, char *cmdString, int cmdLen, char *destBuff
     sleep(5);
     n = read(ttyFP, destBuffer, buffLen);
     if(n != 0){
-	printf("read out %d\n", n);
 	destBuffer[buffLen] = 0x00;
+#if 0
+	printf("read out %d\n", n);
 	printf("read out string is %s\n===", destBuffer);
         hexPrint(destBuffer, n);
+#endif
     }
     return n;
 }
@@ -8047,13 +8049,6 @@ int main(int argc, char *argv[])
             return 0;
     }
 
-#if 0
-        if(buffer[0] == '2'){
-            printf("\nlive forever\n");
-            memset(buffer, 0, sizeof(buffer));
-            n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, buffer, sizeof(buffer));
-        }
-#endif
     curl = curl_easy_init();
     memset(pathBuffer, 0, sizeof(pathBuffer));
     m = sizeof(constPathString);
