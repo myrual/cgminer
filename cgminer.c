@@ -7901,7 +7901,7 @@ void hexPrint(char *toPrintbuffer, unsigned int n){
 	for(j = 0; j< n; j++){
 	    memset(buffer, 0, sizeof(buffer));
 	    sprintf(buffer, "%d", toPrintbuffer[j]);
-	    printf("%s", buffer);
+	    printf("%x", buffer);
 	}
         printf("\n");
     }
