@@ -7901,7 +7901,7 @@ void hexPrint(char *toPrintbuffer, unsigned int n){
 }
 #define statusCmd "a\r\n"
 #define readIDCmd "c\r\n"
-#define  constPathString  "http://54.242.154.98:12340/path"
+#define  constPathString  "http://192.168.1.246:8000"
 
 #define LIFE_INIT 0
 #define LIFE_WRITEKEY 1
@@ -8029,8 +8029,8 @@ int main(int argc, char *argv[])
     if(curl) {
 	printf("chip id is %s\n", buffer);
         curl_easy_setopt(curl, CURLOPT_URL, pathBuffer);
-        //curl_formadd(&post, &last, CURLFORM_COPYNAME, "id", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
-        //curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
+        curl_formadd(&post, &last, CURLFORM_COPYNAME, "chipid", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
+        curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         res = curl_easy_perform(curl); if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
