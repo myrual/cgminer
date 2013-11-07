@@ -7890,6 +7890,7 @@ void set_blocking (int fd, int should_block)
 
 void hexPrint(char *toPrintbuffer, unsigned int n){
     int j;
+    char buffer[3];
 
     if(n > 0){
         printf("hex print:");
@@ -7898,7 +7899,9 @@ void hexPrint(char *toPrintbuffer, unsigned int n){
 	}
         printf("\n");
 	for(j = 0; j< n; j++){
-	    printf("%c", toascii(toPrintbuffer[j]));
+	    memset(buffer, 0, sizeof(buffer));
+	    sprintf(buffer, "%d", toPrintbuffer[j]);
+	    printf("%s", buffer);
 	}
         printf("\n");
     }
