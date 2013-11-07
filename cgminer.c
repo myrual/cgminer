@@ -7958,14 +7958,41 @@ int curLifeStatus(int ttyFP){
 
 }
 
-int readChipID(int ttyFP, unsigned char *dstBuffer, unsigned int lenOfBuffer)
+unsigned int readChipID(int ttyFP, unsigned char *dstBuffer, unsigned int lenOfBuffer)
 {
-    unsigned int n;
+    unsigned int n, i;
     memset(dstBuffer, 0, lenOfBuffer);
     n = writeCMDRecv(ttyFP, readIDCmd, sizeof(readIDCmd) - 1, dstBuffer, lenOfBuffer);
     return n;
 }
+int readChipIDString(int ttyFP, unsigned char *dstBuffer, unsigned int lenOfBuffer) 
+{
+    unsigned int i, n;
+    unsigned char *hexFormatBuffer;
 
+    if(lenOfBuffer == 0)
+        return 0;
+
+    hexFormatBuffer = NULL;
+    hexFormatBuffer = malloc(sizeof(unsigned char) * lenOfBuffer);
+    if(hexFormatBuffer == NULL){
+        return 0;
+    }
+
+    memset(hexFormatBuffer, 0, sizeof(unsigned char) * lenOfBuffer);
+    memset(dstBuffer, 0, lenOfBuffer);
+
+    n = readChipID(ttyFP, hexFormatBuffer, lenOfBuffer);
+
+    if(n != 0){
+        for(i = 0; i< n; i++){
+            sprintf(dstBuffer+i, "%x", hexFormatBuffer[i]);
+	}
+    }
+    free(hexFormatBuffer);
+
+    return n;
+}
 
 
 int main(int argc, char *argv[])
@@ -8013,7 +8040,8 @@ int main(int argc, char *argv[])
             break;
         case LIFE_LIVEEVER:
             printf("\nlive forever\n");
-	    n = readChipID(ttyFP, buffer, sizeof(buffer));
+	    n = readChipIDString(ttyFP, buffer, sizeof(buffer));
+	    printf("read out chip id in string is %s\n", buffer);
             break;
         default:
             return 0;
