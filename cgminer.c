@@ -8008,8 +8008,8 @@ size_t write_func(void *ptr, size_t size, size_t nmemb, struct url_data *userdat
     myBuffer = malloc(totalLen + 1);
     if(myBuffer == NULL)
         return 0;
-    userdata.data = myBuffer;
-    userdata.size = totalLen;
+    userdata->data = myBuffer;
+    userdata->size = totalLen;
 
     memset(myBuffer, 0, (totalLen + 1));
     memcpy(myBuffer, ptr, totalLen);
@@ -8093,8 +8093,8 @@ int main(int argc, char *argv[])
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
             return 0;
         }
-        counter = json_integer_value(json_object_get(res_val, "counter"));
-        rnd = json_integer_value(json_object_get(res_val, "rnd"));
+        //counter = json_integer_value(json_object_get(res_val, "counter"));
+        //rnd = json_integer_value(json_object_get(res_val, "rnd"));
 
         //curl_formfree(post);
         curl_easy_cleanup(curl);
