@@ -7996,6 +7996,29 @@ int readChipIDString(int ttyFP, unsigned char *dstBuffer, unsigned int lenOfBuff
     return n;
 }
 
+struct url_data{
+    size_t size;
+    char * data;
+};
+
+size_t write_func(void *ptr, size_t size, size_t nmemb, struct url_data *userdata)
+{
+    void *myBuffer = NULL;
+    size_t totalLen = size * nmemb;
+    myBuffer = malloc(totalLen + 1);
+    if(myBuffer == NULL)
+        return 0;
+    userdata.data = myBuffer;
+    userdata.size = totalLen;
+
+    memset(myBuffer, 0, (totalLen + 1));
+    memcpy(myBuffer, ptr, totalLen);
+    printf("write function works\n");
+    printf("%s", myBuffer);
+    return totalLen;
+}
+
+
 
 int main(int argc, char *argv[])
 {
@@ -8006,12 +8029,14 @@ int main(int argc, char *argv[])
     char *s;
     CURL *curl;
     CURLcode res;
+
     int ttyFP = 0;
     unsigned char buffer[64];
-    unsigned char pathBuffer[255];
-    int n,m;
+    unsigned char pathBuffer[255]; int n,m;
     struct curl_httppost *post=NULL;
     struct curl_httppost *last=NULL; 
+    unsigned int counter, rnd;
+    struct url_data myurl_data;
 
 
 
@@ -8062,10 +8087,14 @@ int main(int argc, char *argv[])
         curl_formadd(&post, &last, CURLFORM_COPYNAME, "chipid", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
         curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &myurl_data);
         res = curl_easy_perform(curl); if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
             return 0;
         }
+        counter = json_integer_value(json_object_get(res_val, "counter"));
+        rnd = json_integer_value(json_object_get(res_val, "rnd"));
 
         //curl_formfree(post);
         curl_easy_cleanup(curl);
