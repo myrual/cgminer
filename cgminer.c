@@ -8116,7 +8116,7 @@ int main(int argc, char *argv[])
 	}
         counter = json_integer_value(json_object_get(res_val, "counter"));
         rnd = json_integer_value(json_object_get(res_val, "rnd"));
-	printf("counter is %l, rnd is %l\n", counter, rnd);
+	printf("counter is %d, rnd is %d\n", counter, rnd);
 
         //curl_formfree(post);
         curl_easy_cleanup(curl);
