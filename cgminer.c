@@ -8114,8 +8114,8 @@ int main(int argc, char *argv[])
             printf("Empty data received in json_rpc_call.");
 	    return 0;
 	}
-        counter = json_integer_value(json_object_get(res_val, "counter"));
-        rnd = json_integer_value(json_object_get(res_val, "rnd"));
+        counter = json_integer_value(json_object_get(val, "counter"));
+        rnd = json_integer_value(json_object_get(val, "rnd"));
 	printf("counter is %d, rnd is %d\n", counter, rnd);
 
         //curl_formfree(post);
