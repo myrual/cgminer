@@ -7996,26 +7996,34 @@ int readChipIDString(int ttyFP, unsigned char *dstBuffer, unsigned int lenOfBuff
     return n;
 }
 
-struct url_data{
-    size_t size;
-    char * data;
+struct data_buffer {
+	void		*buf;
+	size_t		len;
 };
 
-size_t write_func(void *ptr, size_t size, size_t nmemb, struct url_data *userdata)
-{
-    void *myBuffer = NULL;
-    size_t totalLen = size * nmemb;
-    myBuffer = malloc(totalLen + 1);
-    if(myBuffer == NULL)
-        return 0;
-    userdata->data = myBuffer;
-    userdata->size = totalLen;
 
-    memset(myBuffer, 0, (totalLen + 1));
-    memcpy(myBuffer, ptr, totalLen);
-    printf("write function works\n");
-    printf("%s", myBuffer);
-    return totalLen;
+static size_t all_data_cb_encrypt(const void *ptr, size_t size, size_t nmemb,
+			  void *user_data)
+{
+	struct data_buffer *db = user_data;
+	size_t len = size * nmemb;
+	size_t oldlen, newlen;
+	void *newmem;
+	static const unsigned char zero = 0;
+
+	oldlen = db->len;
+	newlen = oldlen + len;
+
+	newmem = realloc(db->buf, newlen + 1);
+	if (!newmem)
+		return 0;
+
+	db->buf = newmem;
+	db->len = newlen;
+	memcpy(db->buf + oldlen, ptr, len);
+	memcpy(db->buf + newlen, &zero, 1);	/* null terminate */
+
+	return len;
 }
 
 
@@ -8036,7 +8044,8 @@ int main(int argc, char *argv[])
     struct curl_httppost *post=NULL;
     struct curl_httppost *last=NULL; 
     unsigned int counter, rnd;
-    struct url_data myurl_data;
+    struct data_buffer myurl_data = {NULL, 0};
+    json_t *val, *err_val, *res_val;
 
 
 
@@ -8087,14 +8096,25 @@ int main(int argc, char *argv[])
         curl_formadd(&post, &last, CURLFORM_COPYNAME, "chipid", CURLFORM_COPYCONTENTS, buffer, CURLFORM_END);
         curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, all_data_cb_encrypt);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &myurl_data);
-        res = curl_easy_perform(curl); if(res != CURLE_OK) {
-            fprintf(stderr, "curl_easy_perform() failed %s\n", curl_easy_strerror(res));
+        res = curl_easy_perform(curl); 
+	if(res != CURLE_OK) {
+            printf("curl_easy_perform() failed %s\n", curl_easy_strerror(res));
             return 0;
         }
-        //counter = json_integer_value(json_object_get(res_val, "counter"));
-        //rnd = json_integer_value(json_object_get(res_val, "rnd"));
+	if(myurl_data.buf == NULL){
+            printf("Empty data received in json_rpc_call.");
+	    return 0;
+	}
+
+	val = JSON_LOADS(myurl_data.buf, &err);
+	if(val == NULL){
+            printf("Empty data received in json_rpc_call.");
+	    return 0;
+	}
+        counter = json_integer_value(json_object_get(res_val, "counter"));
+        rnd = json_integer_value(json_object_get(res_val, "rnd"));
 
         //curl_formfree(post);
         curl_easy_cleanup(curl);
