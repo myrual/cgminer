@@ -8108,7 +8108,7 @@ int main(int argc, char *argv[])
             printf("Empty data received in json_rpc_call.");
 	    return 0;
 	}
-
+	printf(myurl_data.buf);
 	val = JSON_LOADS(myurl_data.buf, &err);
 	if(val == NULL){
             printf("Empty data received in json_rpc_call.");
