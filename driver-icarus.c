@@ -223,7 +223,7 @@ static void rev(unsigned char *s, size_t l)
 }
 
 #define icarus_open2(devpath, baud, purge)  serial_open(devpath, baud, ICARUS_READ_FAULT_DECISECONDS, purge)
-#define icarus_open(devpath, baud)  icarus_open2(devpath, baud, false)
+#define icarus_open(devpath, baud)  icarus_open2(devpath, baud, true)
 
 #define ICA_GETS_ERROR -1
 #define ICA_GETS_OK 0
