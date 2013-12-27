@@ -7101,6 +7101,7 @@ int main(int argc, char *argv[])
 		quit(1, "Failed to pthread_cond_init gws_cond");
 
 	sprintf(packagename, "%s %s", PACKAGE, VERSION);
+	printf("timeout longer on uart");
 
 	handler.sa_handler = &sighandler;
 	handler.sa_flags = 0;
