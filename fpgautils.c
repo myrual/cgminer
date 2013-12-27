@@ -421,7 +421,7 @@ int serial_open(const char *devpath, unsigned long baud, signed short timeout, b
 
 	// Code must specify a valid timeout value (0 means don't timeout)
 	my_termios.c_cc[VTIME] = (cc_t)timeout;
-	my_termios.c_cc[VMIN] = 0;
+	my_termios.c_cc[VMIN] = 1;
 
 #ifdef TERMIOS_DEBUG
 	termios_debug(devpath, &my_termios, "settings");
