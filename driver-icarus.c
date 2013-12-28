@@ -280,11 +280,17 @@ static int icarus_gets(unsigned char *buf, int fd, struct timeval *tv_finish, st
 static int icarus_write(int fd, const void *buf, size_t bufLen)
 {
 	size_t ret;
+	unsigned int i;
 
 	ret = write(fd, buf, bufLen);
 	if (unlikely(ret != bufLen))
 		return 1;
 
+	printf("icarus_write:");
+        for(i = 0; i < buflen; i++){
+		printf("%d", buf[i]);
+	}
+	print("\n");
 	return 0;
 }
 
