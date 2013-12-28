@@ -73,11 +73,11 @@ ASSERT1(sizeof(uint32_t) == 4);
 // i.e. 10 means 1/10 of a second
 #define TIME_FACTOR 10
 // It's 10 per second, thus value = 10/TIME_FACTOR =
-#define ICARUS_READ_FAULT_DECISECONDS  50
+#define ICARUS_READ_FAULT_DECISECONDS  10
 
 // In timing mode: Default starting value until an estimate can be obtained
 // 5 seconds allows for up to a ~840MH/s device
-#define ICARUS_READ_COUNT_TIMING	(20 * TIME_FACTOR)
+#define ICARUS_READ_COUNT_TIMING	(30 * TIME_FACTOR)
 
 // For a standard Icarus REV3 (to 5 places)
 // Since this rounds up a the last digit - it is a slight overestimate
