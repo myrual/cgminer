@@ -287,7 +287,7 @@ static int icarus_write(int fd, const void *buf, size_t bufLen)
 		return 1;
 
 	printf("icarus_write:");
-        for(i = 0; i < buflen; i++){
+        for(i = 0; i < bufLen; i++){
 		printf("%d", buf[i]);
 	}
 	printf("\n");
