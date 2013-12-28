@@ -288,7 +288,7 @@ static int icarus_write(int fd, const void *buf, size_t bufLen)
 
 	printf("icarus_write:");
         for(i = 0; i < bufLen; i++){
-		j = (unsigned int)(buf[i]);
+		j = *((unsigned int*)buf);
 		printf("%d", j);
 	}
 	printf("\n");
