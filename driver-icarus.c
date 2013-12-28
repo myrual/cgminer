@@ -713,6 +713,10 @@ static int64_t icarus_scanhash(struct thr_info *thr, struct work *work,
 	memset(nonce_bin, 0, sizeof(nonce_bin));
 	info = icarus_info[icarus->device_id];
 	ret = icarus_gets(nonce_bin, fd, &tv_finish, thr, info->read_count);
+
+	if (opt_debug) {
+		printf("Icarus read out data\n");
+	}
 	if (ret == ICA_GETS_ERROR) {
 		do_icarus_close(thr);
 		applog(LOG_ERR, "%s%i: Comms error", icarus->drv->name, icarus->device_id);
@@ -756,8 +760,13 @@ static int64_t icarus_scanhash(struct thr_info *thr, struct work *work,
 	was_hw_error = (curr_hw_errors > icarus->hw_errors);
 
 	// Force a USB close/reopen on any hw error
-	if (was_hw_error)
+	if (was_hw_error){
+
+	if (opt_debug) {
+		printf("Icarus read out met hwerror\n");
+	}
 		do_icarus_close(thr);
+	}
 
 	hash_count = (nonce & info->nonce_mask);
 	hash_count++;
