@@ -697,6 +697,7 @@ static int64_t icarus_scanhash(struct thr_info *thr, struct work *work,
 	tcflush(fd, TCOFLUSH);
 #endif
 	ret = icarus_write(fd, ob_bin, sizeof(ob_bin));
+	sleep(10);
 	if (ret) {
 		do_icarus_close(thr);
 		applog(LOG_ERR, "%s%i: Comms error", icarus->drv->name, icarus->device_id);
