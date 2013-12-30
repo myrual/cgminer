@@ -73,7 +73,7 @@ ASSERT1(sizeof(uint32_t) == 4);
 // i.e. 10 means 1/10 of a second
 #define TIME_FACTOR 10
 // It's 10 per second, thus value = 10/TIME_FACTOR =
-#define ICARUS_READ_FAULT_DECISECONDS  10
+#define ICARUS_READ_FAULT_DECISECONDS  100
 
 // In timing mode: Default starting value until an estimate can be obtained
 // 5 seconds allows for up to a ~840MH/s device
@@ -223,7 +223,7 @@ static void rev(unsigned char *s, size_t l)
 }
 
 #define icarus_open2(devpath, baud, purge)  serial_open(devpath, baud, ICARUS_READ_FAULT_DECISECONDS, purge)
-#define icarus_open(devpath, baud)  icarus_open2(devpath, baud, false)
+#define icarus_open(devpath, baud)  icarus_open2(devpath, baud, true)
 
 #define ICA_GETS_ERROR -1
 #define ICA_GETS_OK 0
@@ -557,6 +557,10 @@ static bool icarus_detect_one(const char *devpath)
 
 	memset(nonce_bin, 0, sizeof(nonce_bin));
 	icarus_gets(nonce_bin, fd, &tv_finish, NULL, 1);
+	if (opt_debug) {
+		printf("Icarus read out data\n");
+	}
+
 
 	icarus_close(fd);
 
