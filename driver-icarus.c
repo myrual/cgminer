@@ -697,7 +697,6 @@ static int64_t icarus_scanhash(struct thr_info *thr, struct work *work,
 	tcflush(fd, TCOFLUSH);
 #endif
 	ret = icarus_write(fd, ob_bin, sizeof(ob_bin));
-	sleep(10);
 	if (ret) {
 		do_icarus_close(thr);
 		applog(LOG_ERR, "%s%i: Comms error", icarus->drv->name, icarus->device_id);
@@ -717,6 +716,7 @@ static int64_t icarus_scanhash(struct thr_info *thr, struct work *work,
 	/* Icarus will return 4 bytes (ICARUS_READ_SIZE) nonces or nothing */
 	memset(nonce_bin, 0, sizeof(nonce_bin));
 	info = icarus_info[icarus->device_id];
+	sleep(10);
 	ret = icarus_gets(nonce_bin, fd, &tv_finish, thr, info->read_count);
 
 	if (opt_debug) {
