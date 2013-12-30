@@ -73,7 +73,7 @@ ASSERT1(sizeof(uint32_t) == 4);
 // i.e. 10 means 1/10 of a second
 #define TIME_FACTOR 10
 // It's 10 per second, thus value = 10/TIME_FACTOR =
-#define ICARUS_READ_FAULT_DECISECONDS  100
+#define ICARUS_READ_FAULT_DECISECONDS  150
 
 // In timing mode: Default starting value until an estimate can be obtained
 // 5 seconds allows for up to a ~840MH/s device
@@ -716,7 +716,6 @@ static int64_t icarus_scanhash(struct thr_info *thr, struct work *work,
 	/* Icarus will return 4 bytes (ICARUS_READ_SIZE) nonces or nothing */
 	memset(nonce_bin, 0, sizeof(nonce_bin));
 	info = icarus_info[icarus->device_id];
-	sleep(10);
 	ret = icarus_gets(nonce_bin, fd, &tv_finish, thr, info->read_count);
 
 	if (opt_debug) {
