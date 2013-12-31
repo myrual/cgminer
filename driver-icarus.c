@@ -921,6 +921,14 @@ static void icarus_shutdown(struct thr_info *thr)
 	do_icarus_close(thr);
 }
 
+static void icarus_restart(struct cgpu_info * ptrInfo)
+{
+	FILE *pp;
+	printf("it is time to restart chip\n");
+	pp = popen("sh restartchip.sh","r");
+	pclose(pp);
+}
+
 struct device_drv icarus_drv = {
 	.drv_id = DRIVER_ICARUS,
 	.dname = "Icarus",
@@ -930,4 +938,5 @@ struct device_drv icarus_drv = {
 	.thread_prepare = icarus_prepare,
 	.scanhash = icarus_scanhash,
 	.thread_shutdown = icarus_shutdown,
+	.reinit_device = icarus_restart,
 };
