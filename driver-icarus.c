@@ -926,6 +926,10 @@ static void icarus_restart(struct cgpu_info * ptrInfo)
 	FILE *pp;
 	printf("it is time to restart chip\n");
 	pp = popen("sh restartchip.sh","r");
+	if(pp != NULL){
+		printf("==========run restart chip now===========\n");
+		sleep(2);
+	}
 	pclose(pp);
 }
 
