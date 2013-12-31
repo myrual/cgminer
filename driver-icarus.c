@@ -923,14 +923,15 @@ static void icarus_shutdown(struct thr_info *thr)
 
 static void icarus_restart(struct cgpu_info * ptrInfo)
 {
-	FILE *pp;
+	int pp;
 	printf("it is time to restart chip\n");
-	pp = popen("sh restartchip.sh","r");
-	if(pp != NULL){
+	pp = system("/bin/sh /root/restartchip.sh");
+	if(pp){
 		printf("==========run restart chip now===========\n");
 		sleep(2);
+	}else{
+		printf("----------run restart chip failed---------\n");
 	}
-	pclose(pp);
 }
 
 struct device_drv icarus_drv = {
