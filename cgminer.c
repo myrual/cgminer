@@ -6209,8 +6209,8 @@ static void *watchpool_thread(void __maybe_unused *userdata)
  * the screen at regular intervals, and restarts threads if they appear to have
  * died. */
 #define WATCHDOG_INTERVAL		2
-#define WATCHDOG_SICK_TIME		20
-#define WATCHDOG_DEAD_TIME		40
+#define WATCHDOG_SICK_TIME		60
+#define WATCHDOG_DEAD_TIME		600
 #define WATCHDOG_SICK_COUNT		(WATCHDOG_SICK_TIME/WATCHDOG_INTERVAL)
 #define WATCHDOG_DEAD_COUNT		(WATCHDOG_DEAD_TIME/WATCHDOG_INTERVAL)
 
@@ -7101,8 +7101,6 @@ int main(int argc, char *argv[])
 		quit(1, "Failed to pthread_cond_init gws_cond");
 
 	sprintf(packagename, "%s %s", PACKAGE, VERSION);
-	printf("timeout longer on uart");
-
 	handler.sa_handler = &sighandler;
 	handler.sa_flags = 0;
 	sigemptyset(&handler.sa_mask);
