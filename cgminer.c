@@ -6210,7 +6210,7 @@ static void *watchpool_thread(void __maybe_unused *userdata)
  * died. */
 #define WATCHDOG_INTERVAL		2
 #define WATCHDOG_SICK_TIME		20
-#define WATCHDOG_DEAD_TIME		60
+#define WATCHDOG_DEAD_TIME		40
 #define WATCHDOG_SICK_COUNT		(WATCHDOG_SICK_TIME/WATCHDOG_INTERVAL)
 #define WATCHDOG_DEAD_COUNT		(WATCHDOG_DEAD_TIME/WATCHDOG_INTERVAL)
 

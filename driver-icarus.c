@@ -73,7 +73,7 @@ ASSERT1(sizeof(uint32_t) == 4);
 // i.e. 10 means 1/10 of a second
 #define TIME_FACTOR 10
 // It's 10 per second, thus value = 10/TIME_FACTOR =
-#define ICARUS_READ_FAULT_DECISECONDS  150
+#define ICARUS_READ_FAULT_DECISECONDS  80
 
 // In timing mode: Default starting value until an estimate can be obtained
 // 5 seconds allows for up to a ~840MH/s device
@@ -286,12 +286,16 @@ static int icarus_write(int fd, const void *buf, size_t bufLen)
 	if (unlikely(ret != bufLen))
 		return 1;
 
-	printf("icarus_write:");
-        for(i = 0; i < bufLen; i++){
-		j = *((unsigned char*)buf+i);
-		printf("%2x", j);
+#if 1
+	if (opt_debug) {
+		printf("icarus_write:");
+		for(i = 0; i < bufLen; i++){
+			j = *((unsigned char*)buf+i);
+			printf("%2x", j);
+		}
+		printf("\n");
 	}
-	printf("\n");
+#endif
 	return 0;
 }
 
